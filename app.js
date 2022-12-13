@@ -114,6 +114,7 @@ app.get("/userpage", (req, res) => {
 });
 
 app.post("/addquote", (req, res) => {
+    console.log(req.user.username);
 
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -136,6 +137,7 @@ app.post("/addquote", (req, res) => {
 });
 
 app.post("/addfav",(req,res)=>{
+    console.log(req.user.username);
     if (req.isAuthenticated()){
     const favQuoteId = req.body.favQuoteId;
 
@@ -170,6 +172,7 @@ app.post("/addfav",(req,res)=>{
 });
 
 app.post("/deletequote",(req,res)=>{
+    console.log(req.user.username);
     const checkedQuoteId = req.body.checkbox;
 
     User.findOneAndUpdate({username:req.user.username},{$pull:{quotes:{_id:checkedQuoteId}}},(err,data)=>{
@@ -188,6 +191,7 @@ app.post("/deletequote",(req,res)=>{
 });
 
 app.post("/deletefavquote",(req,res)=>{
+    console.log(req.user.username);
     const favQuoteId = req.body.checkbox;
 
     User.findOneAndUpdate({username:req.user.username},{$pull:{fav:{_id:favQuoteId}}},(err,data)=>{
