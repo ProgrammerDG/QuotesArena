@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
     username: String,
     password: String,
     quotes: [quoteSchema],
-    fav:[quoteSchema]
+    fav: [quoteSchema]
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -51,16 +51,16 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.get("/", (req, res) => {
-    if(req.isAuthenticated()){
+    if (req.isAuthenticated()) {
         Quote.find({}, (err, quotes) => {
             if (!err) {
-                res.render("home", { quotes: quotes, warning:" " });
+                res.render("home", { quotes: quotes, warning: " " });
             }
         });
-    }else{
+    } else {
         Quote.find({}, (err, quotes) => {
             if (!err) {
-                res.render("home", { quotes: quotes, warning:"First Login or Signup to add quote to favourites."});
+                res.render("home", { quotes: quotes, warning: "First Login or Signup to add quote to favourites." });
             }
         });
     }
@@ -75,8 +75,8 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-    req.logOut((err)=>{
-        if(err){
+    req.logOut((err) => {
+        if (err) {
             console.log(err);
         }
         res.redirect("/");
@@ -89,22 +89,22 @@ app.get("/userpage", (req, res) => {
             if (err) {
                 console.log(err);
             } else {
-                if(req.user.username==process.env.ADMINEMAIL){
+                if (req.user.username == process.env.ADMINEMAIL) {
                     let usersArray = [];
 
-                    User.find({},(err,foundUsers)=>{
-                        for(let user of foundUsers){
-                            if(user.username==process.env.ADMINEMAIL){
+                    User.find({}, (err, foundUsers) => {
+                        for (let user of foundUsers) {
+                            if (user.username == process.env.ADMINEMAIL) {
                                 continue;
-                            }else{
+                            } else {
                                 usersArray.push(user);
                             }
                         }
-                        res.render("admin", {username:"Admin", quotes:data.quotes, favquotes:data.fav, users:usersArray}); 
-                    });                   
-                }else{
-                    res.render("userpage", { username:data.username, quotes: data.quotes, favquotes:data.fav});
-                }                
+                        res.render("admin", { username: "Admin", quotes: data.quotes, favquotes: data.fav, users: usersArray });
+                    });
+                } else {
+                    res.render("userpage", { username: data.username, quotes: data.quotes, favquotes: data.fav });
+                }
             }
         })
     } else {
@@ -114,46 +114,46 @@ app.get("/userpage", (req, res) => {
 });
 
 app.post("/addquote", (req, res) => {
-        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-        let nq = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options) };
+    let nq = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options) };
 
-        User.findOne({ username: req.user.username }, function (err, foundUser) {
-            foundUser.quotes.push(nq);
-            foundUser.save();
-    
-            let id2 = foundUser.quotes.slice(-1).pop()._id;
-    
-            let nq2 = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options), id2 };
-    
-            let q = new Quote(nq2);
-            q.save();
-        });
+    User.findOne({ username: req.user.username }, function (err, foundUser) {
+        foundUser.quotes.push(nq);
+        foundUser.save();
 
-        res.redirect("/userpage");
+        let id2 = foundUser.quotes.slice(-1).pop()._id;
 
-    
+        let nq2 = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options), id2 };
+
+        let q = new Quote(nq2);
+        q.save();
+    });
+
+    res.redirect("/userpage");
+
+
 });
 
-app.post("/addfav",(req,res)=>{
+app.post("/addfav", (req, res) => {
     const favQuoteId = req.body.favQuoteId;
 
-    Quote.findById(favQuoteId,(err,data)=>{
-        if(err){
+    Quote.findById(favQuoteId, (err, data) => {
+        if (err) {
             console.log(err);
-        }else{
-            User.findOne({username:req.user.username},function(err,foundUser){
+        } else {
+            User.findOne({ username: req.user.username }, function (err, foundUser) {
                 let flag = true;
-        
-                for(let i=0;i<foundUser.fav.length;i++){
-                    if(foundUser.fav[i]._id == favQuoteId){
+
+                for (let i = 0; i < foundUser.fav.length; i++) {
+                    if (foundUser.fav[i]._id == favQuoteId) {
                         flag = false;
                         res.redirect("/");
                         break;
                     }
                 }
-        
-                if(flag){
+
+                if (flag) {
                     foundUser.fav.push(data);
                     foundUser.save();
                     res.redirect("/");
@@ -162,42 +162,42 @@ app.post("/addfav",(req,res)=>{
         }
     });
 
-    
-   
+
+
 });
 
-app.post("/deletequote",(req,res)=>{
-        const checkedQuoteId = req.body.checkbox;
+app.post("/deletequote", (req, res) => {
+    const checkedQuoteId = req.body.checkbox;
 
-        User.findOneAndUpdate({username:req.user.username},{$pull:{quotes:{_id:checkedQuoteId}}},(err,data)=>{
-            if(err){
+    User.findOneAndUpdate({ username: req.user.username }, { $pull: { quotes: { _id: checkedQuoteId } } }, (err, data) => {
+        if (err) {
+            console.log(err);
+        }
+
+        Quote.findOneAndRemove({ id2: checkedQuoteId }, function (err) {
+            if (err) {
                 console.log(err);
             }
-    
-            Quote.findOneAndRemove({id2:checkedQuoteId},function(err){
-                if(err){
-                    console.log(err);
-                }
-            });
         });
+    });
 
-        res.redirect("/userpage");
-    
-  
+    res.redirect("/userpage");
+
+
 });
 
-app.post("/deletefavquote",(req,res)=>{
-    
-        const favQuoteId = req.body.checkbox;
+app.post("/deletefavquote", (req, res) => {
 
-        User.findOneAndUpdate({username:req.user.username},{$pull:{fav:{_id:favQuoteId}}},(err,data)=>{
-            if(err){
-                console.log(err);
-            }    
-        })
-        res.redirect("/userpage");
-    
-    
+    const favQuoteId = req.body.checkbox;
+
+    User.findOneAndUpdate({ username: req.user.username }, { $pull: { fav: { _id: favQuoteId } } }, (err, data) => {
+        if (err) {
+            console.log(err);
+        }
+    })
+    res.redirect("/userpage");
+
+
 });
 
 let globalUsername = "";
@@ -211,38 +211,38 @@ app.post("/signup", (req, res) => {
 
     let flag = true;
 
-    User.find({},(err,foundUsers)=>{
-        for(let user of foundUsers){
-            if(user.username==username){
+    User.find({}, (err, foundUsers) => {
+        for (let user of foundUsers) {
+            if (user.username == username) {
                 flag = false;
                 res.redirect("/signup");
                 break;
             }
         }
 
-        if(flag){
+        if (flag) {
             let otpSent = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
 
             var transporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
-                  user: process.env.ADMINEMAIL,
-                  pass: process.env.ADMINPWD
+                    user: process.env.ADMINEMAIL,
+                    pass: process.env.ADMINPWD
                 }
-              });
-              
-              var mailOptions = {
+            });
+
+            var mailOptions = {
                 from: process.env.ADMINEMAIL,
                 to: username,
                 subject: "OTP Verification for QuotesArena",
                 text: otpSent
-              };
-              
-              transporter.sendMail(mailOptions, function(error, info){
+            };
+
+            transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                  console.log(error);
+                    console.log(error);
                 }
-              });
+            });
 
             globalUsername = username;
             globalPassword = password;
@@ -250,53 +250,53 @@ app.post("/signup", (req, res) => {
 
             res.redirect("/otp");
         }
-   });
+    });
 });
 
 app.get("/otp", (req, res) => {
     res.render("otp");
 });
 
-app.post("/otp",(req,res)=>{
+app.post("/otp", (req, res) => {
     let otpReceived = req.body.otpReceived;
 
-    if(otpReceived==globalOtpSent){
+    if (otpReceived == globalOtpSent) {
         User.register(new User({ username: globalUsername }), globalPassword, (err, user) => {
             if (err) {
                 console.log(err);
                 return res.render("otp");
-            }else{
+            } else {
                 res.redirect("/login");
             }
         });
-    }else{
+    } else {
         res.redirect("/signup");
     }
 });
 
-app.post("/resendotp",(req,res)=>{
+app.post("/resendotp", (req, res) => {
     let otpSent = (Math.floor(Math.random() * 10000) + 10000).toString().substring(1);
 
     var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: process.env.ADMINEMAIL,
-          pass: process.env.ADMINPWD
+            user: process.env.ADMINEMAIL,
+            pass: process.env.ADMINPWD
         }
-      });
-      
-      var mailOptions = {
+    });
+
+    var mailOptions = {
         from: process.env.ADMINEMAIL,
         to: globalUsername,
         subject: "OTP Verification for QuotesArena",
         text: otpSent
-      };
-      
-      transporter.sendMail(mailOptions, function(error, info){
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
-          console.log(error);
+            console.log(error);
         }
-      });
+    });
 
     globalOtpSent = otpSent;
 
@@ -309,27 +309,27 @@ app.post("/login", passport.authenticate("local", {
     failureRedirect: "/login"
 }));
 
-app.post("/deleteAcc",(req,res)=>{
+app.post("/deleteAcc", (req, res) => {
     let username = req.body.email;
 
-    User.findOne({username:username},(err,user)=>{    
+    User.findOne({ username: username }, (err, user) => {
         let quotesIdArray = [];
 
-        for(let quote of user.quotes){
+        for (let quote of user.quotes) {
             quotesIdArray.push(quote._id);
         }
 
-        for(let quote of quotesIdArray){
-            Quote.findOneAndDelete({id2:quote},(err)=>{
-                if(err){
+        for (let quote of quotesIdArray) {
+            Quote.findOneAndDelete({ id2: quote }, (err) => {
+                if (err) {
                     console.log(err);
                 }
             });
         }
     });
 
-    User.findOneAndDelete({username:username},(err,data)=>{
-        if(err){
+    User.findOneAndDelete({ username: username }, (err, data) => {
+        if (err) {
             console.log(err);
         }
     });
