@@ -114,7 +114,6 @@ app.get("/userpage", (req, res) => {
 });
 
 app.post("/addquote", (req, res) => {
-    if(req.isAuthenticated()){
         var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
         let nq = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options) };
@@ -131,18 +130,12 @@ app.post("/addquote", (req, res) => {
             q.save();
         });
 
-        passport.authenticate("local", {
-            successRedirect: "/userpage",
-            failureRedirect: "/login"
-        })
+        res.redirect("/userpage");
 
-        // res.redirect("/userpage");
-
-    }
+    
 });
 
 app.post("/addfav",(req,res)=>{
-    if (req.isAuthenticated()){
     const favQuoteId = req.body.favQuoteId;
 
     Quote.findById(favQuoteId,(err,data)=>{
@@ -169,12 +162,11 @@ app.post("/addfav",(req,res)=>{
         }
     });
 
-    }
+    
    
 });
 
 app.post("/deletequote",(req,res)=>{
-    if(req.isAuthenticated()){
         const checkedQuoteId = req.body.checkbox;
 
         User.findOneAndUpdate({username:req.user.username},{$pull:{quotes:{_id:checkedQuoteId}}},(err,data)=>{
@@ -188,18 +180,14 @@ app.post("/deletequote",(req,res)=>{
                 }
             });
         });
+
+        res.redirect("/userpage");
     
-        passport.authenticate("local", {
-            successRedirect: "/userpage",
-            failureRedirect: "/login"
-        })
-        // res.redirect("/userpage");
-    }
   
 });
 
 app.post("/deletefavquote",(req,res)=>{
-    if(req.isAuthenticated()){
+    
         const favQuoteId = req.body.checkbox;
 
         User.findOneAndUpdate({username:req.user.username},{$pull:{fav:{_id:favQuoteId}}},(err,data)=>{
@@ -207,13 +195,8 @@ app.post("/deletefavquote",(req,res)=>{
                 console.log(err);
             }    
         })
-
-        passport.authenticate("local", {
-            successRedirect: "/userpage",
-            failureRedirect: "/login"
-        })
-        // res.redirect("/userpage");
-    }
+        res.redirect("/userpage");
+    
     
 });
 
