@@ -84,6 +84,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/userpage", (req, res) => {
+    console.log(req.user.username);
     if (req.isAuthenticated()) {
         User.findOne({ username: req.user.username }, (err, data) => {
             if (err) {
