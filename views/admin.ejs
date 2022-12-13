@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+    <!-- navbar -->
+
+    <%- include("partials/navbar.ejs") %>
+
+        <!-- menu div -->
+
+        <div id="menuDiv" class="menuDivDisplay">
+            <button id="menuDivCloseBtn" class="animate__animated animate__rotateIn">
+                <i class="fa fa-times fa-2x"></i>
+            </button>
+
+            <h1 class="animate__animated animate__rotateInDownRight"><a href="/">Home</a></h1>
+            <h1 class="animate__animated animate__rotateInDownRight"><a href="/signup">SignUp</a></h1>
+            <h1 class="animate__animated animate__rotateInDownRight"><a href="/login">Login</a></h1>
+            <h1 class="animate__animated animate__rotateInDownRight"><a href="/logout">Logout</a></h1>
+        </div>
+
+        <!-- header -->
+
+        <div id="header">
+            <div id="logoutDiv">
+                <form action="/logout" method="get">
+                    <button type="submit" id="logoutBtn">Log Out</button>
+                </form>
+            </div>
+
+            <p id="headerP" class="animate__animated animate__flipInY">"You can ADD and DELETE (by clicking checkbox)
+                any of your quotes."</p>
+
+            <div id="registerDiv">
+                <form action="/signup" method="get">
+                    <button type="submit" id="signupBtn">SignUp</button>
+                </form>
+                <form action="/login" method="get">
+                    <button type="submit" id="loginBtn">LogIn</button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- welcome h1 -->
+
+        <h1 id="welcomeH1" class="animate__animated animate__zoomInDown">Welcome <%= username %> to the ARENA of Quotes.
+        </h1>
+
+        <!-- menu button -->
+
+        <div id="menuBtnDiv" class="animate__animated animate__rotateIn">
+            <button id="menuBtn">
+                <i class="fa fa-bars fa-2x"></i>
+            </button>
+        </div>
+
+        <!-- add quote container -->
+
+        <div id="addDiv">
+            <h1 id="addH1" class="animate__animated animate__rubberBand">ADD new Quote</h1>
+
+            <form action="/addquote" method="post">
+                <input type="text" name="newquote" required placeholder="quote" class="formInput">
+                <input type="text" name="newauthor" required placeholder="author" class="formInput">
+                <button type="submit" id="addBtn">Add</button>
+            </form>
+        </div>
+
+        <!-- My quotes heading -->
+
+        <h1 id="myquotesH1">My Quotes</h1>
+
+        <!-- container -->
+
+        <div id="container">
+            <%for(var i=quotes.length-1;i>=0;i--){%>
+                <% if(i%2==0){%>
+                    <form action="/deletequote" method="post" class="qDiv">
+                        <h1 class="qQuote">
+                            <%= quotes[i].quote %>
+                        </h1>
+                        <h2 class="qAuthor"> ~ <%= quotes[i].author %>
+                        </h2>
+                        <h5 class="qDate">
+                            <%= quotes[i].date %>
+                        </h5>
+                        <input type="checkbox" onchange="this.form.submit()" name="checkbox"
+                            value="<%= quotes[i]._id %>">
+                    </form>
+                    <%}else{%>
+                        <form action="/deletequote" method="post"
+                            class="qDiv2">
+                            <h1 class="qQuote">
+                                <%= quotes[i].quote %>
+                            </h1>
+                            <h2 class="qAuthor"> ~ <%= quotes[i].author %>
+                            </h2>
+                            <h5 class="qDate">
+                                <%= quotes[i].date %>
+                            </h5>
+                            <input type="checkbox" onchange="this.form.submit()" name="checkbox"
+                                value="<%= quotes[i]._id %>">
+                        </form>
+                        <%}%>
+
+                            <%}%>
+        </div>
+
+        <!-- Fav quotes heading -->
+
+        <h1 id="favquotesH1">Favourite Quotes</h1>
+
+        <!-- fav container -->
+
+        <div id="favcontainer">
+            <%for(var i=favquotes.length-1;i>=0;i--){%>
+                <% if(i%2==0){%>
+                    <form action="/deletefavquote" method="post"
+                        class="favqDiv">
+                        <h1 class="favqQuote">
+                            <%= favquotes[i].quote %>
+                        </h1>
+                        <h2 class="favqAuthor"> ~ <%= favquotes[i].author %>
+                        </h2>
+                        <h5 class="favqDate">
+                            <%= favquotes[i].date %>
+                        </h5>
+                        <input type="checkbox" onchange="this.form.submit()" name="checkbox"
+                            value="<%= favquotes[i]._id %>">
+                    </form>
+                    <%}else{%>
+                        <form action="/deletefavquote" method="post"
+                            class="favqDiv2">
+                            <h1 class="favqQuote">
+                                <%= favquotes[i].quote %>
+                            </h1>
+                            <h2 class="favqAuthor"> ~ <%= favquotes[i].author %>
+                            </h2>
+                            <h5 class="favqDate">
+                                <%= favquotes[i].date %>
+                            </h5>
+                            <input type="checkbox" onchange="this.form.submit()" name="checkbox"
+                                value="<%= favquotes[i]._id %>">
+                        </form>
+                        <%}%>
+
+                            <%}%>
+        </div>
+
+
+        <!-- users h1 -->
+
+        <h1 id="usersH1">Users</h1>
+
+        <!-- users container -->
+
+        <div id="usersContainer">
+            <%for(let i=users.length-1;i>=0;i--){%>
+                <div id="usersDiv">
+                    <p><%= users[i].username %></p>
+                    <p>Total Quotes = <%= users[i].quotes.length %></p>
+                </div>
+            <%}%>
+        </div>
+
+        <!-- footer -->
+
+        <%- include("partials/footer.ejs") %>
+
+            <script src="js/admin.js"></script>
+
+</body>
+
+</html>

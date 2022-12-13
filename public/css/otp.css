@@ -1,0 +1,100 @@
+body{
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(219,27,221,1) 46%);
+    background-attachment: fixed;
+    margin: 0%;
+    padding: 0%;
+}
+
+html {
+    scroll-behavior: smooth;
+  }
+
+#otpDiv{
+    border: 1px solid black;
+    border-radius: 15%;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    height: 500px;
+    background-color: aliceblue;
+    background-color: rgba(255, 255, 255, 0.253);
+    overflow:auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#otpDiv::-webkit-scrollbar {
+    display: none;
+}
+
+#otpH1{
+    color: white;
+    font-size: 50px;
+    margin-top: -80px;
+}
+
+#otpH2{
+    text-align: center;
+    margin-top: 100px;
+}
+
+#otpP button{
+    text-decoration: none;
+    color: blue;
+    background: none;
+    border: none;
+}
+
+#otpP button:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+
+.formInput{
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 40px;
+    margin-top: 30px;
+    background: none;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+    border-radius: 50px;
+}
+
+#otpBtn{
+    height: 35px;
+    background-color: black;
+    color: white;
+    border: none;
+    display: block;
+    margin-top: 50px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 40px;
+    margin-top: 30px;
+    border-radius: 50px;
+}
+
+#otpBtn:hover{
+    cursor: pointer;
+}
+
+
+
+
+@media (max-width:700px){
+    #otpDiv{
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/otp.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+    <!-- navbar -->
+
+    <%- include("partials/navbar.ejs") %>
+
+
+    <h2 id="otpH2">Check your email for OTP Verification Code.</h2>
+        <!-- signup div -->
+
+        <div id="otpDiv">
+            <h1 id="otpH1" class="animate__animated animate__rubberBand">OTP Verification</h1>
+
+            <form action="/otp" method="post">
+                <input type="number" name="otpReceived" required placeholder="OTP" class="formInput">
+                <button type="submit" id="otpBtn" class="animate__animated animate__rotateIn">Send</button>
+            </form>
+
+            <form action="/resendotp" method="post">
+                <p id="otpP" class="animate__animated animate__lightSpeedInLeft"><button type="submit">Resend Code</button></p>
+            </form>
+        </div>
+
+        
+
+
+        <!-- footer -->
+
+        <%- include("partials/footer.ejs") %>
+
+</body>
+
+</html>

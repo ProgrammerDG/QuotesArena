@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+</head>
+
+<body>
+    <!-- navbar -->
+
+    <%- include("partials/navbar.ejs") %>
+
+        <!-- header -->
+
+        <div id="header">
+            <div id="myAccountDiv">
+                <form action="/userpage" method="get">
+                    <button type="submit" id="userpageBtn">My Account</button>
+                </form>
+            </div>
+
+            <p id="headerP" class="animate__animated animate__flipInY">"Reading quotes can improve how you feel and
+                change your mood for the better."</p>
+
+            <div id="registerDiv">
+                <form action="/signup" method="get">
+                    <button type="submit" id="signupBtn">SignUp</button>
+                </form>
+                <form action="/login" method="get">
+                    <button type="submit" id="loginBtn">LogIn</button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- explore h1 -->
+
+        <h1 id="exploreH1" class="animate__animated animate__zoomInDown">Explore the arena of quotes</h1>
+
+        <!-- explore p -->
+
+        <p id="exploreP" class="animate__animated animate__slideInLeft">* Click on the checkbox to add quote to
+            favourites</p>
+
+
+        <!-- warning section -->
+
+        <p id="warningP" class="animate__animated animate__heartBeat">
+            <%= warning %>
+        </p>
+
+        <!-- container -->
+
+        <div id="container">
+            <%for(var i=quotes.length-1;i>=0;i--){%>
+                <% if(i%2==0){%>
+                    <form action="/addfav" method="post" class="qDiv">
+                        <h1 class="qQuote">
+                            <%= quotes[i].quote %>
+                        </h1>
+                        <h2 class="qAuthor"> ~ <%= quotes[i].author %>
+                        </h2>
+                        <h5 class="qDate">
+                            <%= quotes[i].date %>
+                        </h5>
+                        <input type="checkbox" onchange="this.form.submit()" name="favQuoteId"
+                            value="<%= quotes[i]._id %>">
+                    </form>
+                    <%}else{%>
+                        <form action="/addfav" method="post" class="qDiv2">
+                            <h1 class="qQuote">
+                                <%= quotes[i].quote %>
+                            </h1>
+                            <h2 class="qAuthor"> ~ <%= quotes[i].author %>
+                            </h2>
+                            <h5 class="qDate">
+                                <%= quotes[i].date %>
+                            </h5>
+                            <input type="checkbox" onchange="this.form.submit()" name="favQuoteId"
+                                value="<%= quotes[i]._id %>">
+                        </form>
+                        <%}%>
+
+                            <%}%>
+        </div>
+
+        <!-- footer -->
+
+        <%- include("partials/footer.ejs") %>
+
+</body>
+
+</html>

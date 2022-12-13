@@ -1,0 +1,26 @@
+#footer{
+    width: 100%;
+    height: auto;
+    background-color: black;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#footer p{
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+#footerBackToTop{
+    text-decoration: none;
+    color: white;
+    position: fixed;
+    bottom: 10%;
+    left: 95%;
+    font-size: 40px;
+}
+
+#footerBackToTop:hover{
+    transform: scale(1.5);
+}

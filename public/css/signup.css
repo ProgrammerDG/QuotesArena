@@ -1,0 +1,89 @@
+body{
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(219,27,221,1) 46%);
+    background-attachment: fixed;
+    margin: 0%;
+    padding: 0%;
+}
+
+html {
+    scroll-behavior: smooth;
+  }
+
+#signupDiv{
+    border: 1px solid black;
+    border-radius: 15%;
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    height: 500px;
+    background-color: aliceblue;
+    background-color: rgba(255, 255, 255, 0.253);
+    overflow:auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#signupDiv::-webkit-scrollbar {
+    display: none;
+}
+
+#signupH1{
+    color: white;
+    font-size: 50px;
+    margin-top: -80px;
+}
+
+.formInput{
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 40px;
+    margin-top: 30px;
+    background: none;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+    border-radius: 50px;
+}
+
+#signupBtn{
+    height: 35px;
+    background-color: black;
+    color: white;
+    border: none;
+    display: block;
+    margin-top: 50px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 40px;
+    margin-top: 30px;
+    border-radius: 50px;
+}
+
+#signupBtn:hover{
+    cursor: pointer;
+}
+
+
+#alreadyP a{
+    text-decoration: none;
+    color: blue;
+}
+
+
+
+
+
+@media (max-width:700px){
+    #signupDiv{
+        width: 90%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+}

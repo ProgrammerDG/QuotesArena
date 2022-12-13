@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/signup.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+    <!-- navbar -->
+
+    <%- include("partials/navbar.ejs") %>
+        <!-- signup div -->
+
+        <div id="signupDiv">
+            <h1 id="signupH1" class="animate__animated animate__rubberBand">Join Our Arena</h1>
+
+            <form action="/signup" method="post">
+                <input type="email" name="username" required placeholder="Email" class="formInput">
+                <input type="password" name="password" required placeholder="Password" class="formInput">
+                <button type="submit" id="signupBtn" class="animate__animated animate__rotateIn">Sign Up</button>
+            </form>
+
+            <p id="alreadyP" class="animate__animated animate__lightSpeedInLeft">Already have an account? <a
+                    href="/login">Log In</a></p>
+
+
+        </div>
+
+        <!-- footer -->
+
+        <%- include("partials/footer.ejs") %>
+
+</body>
+
+</html>
