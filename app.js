@@ -133,11 +133,7 @@ app.post("/addquote", (req, res) => {
 
         res.redirect("/userpage");
 
-    }else {
-        res.redirect("/login");
     }
- 
-
 });
 
 app.post("/addfav",(req,res)=>{
@@ -168,8 +164,6 @@ app.post("/addfav",(req,res)=>{
         }
     });
 
-    }else{
-        res.redirect("/");
     }
    
 });
@@ -191,8 +185,6 @@ app.post("/deletequote",(req,res)=>{
         });
     
         res.redirect("/userpage");
-    }else {
-        res.redirect("/login");
     }
   
 });
@@ -208,8 +200,6 @@ app.post("/deletefavquote",(req,res)=>{
         })
     
         res.redirect("/userpage");
-    }else {
-        res.redirect("/login");
     }
     
 });
