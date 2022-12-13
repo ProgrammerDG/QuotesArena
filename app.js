@@ -131,7 +131,12 @@ app.post("/addquote", (req, res) => {
             q.save();
         });
 
-        res.redirect("/userpage");
+        passport.authenticate("local", {
+            successRedirect: "/userpage",
+            failureRedirect: "/login"
+        })
+
+        // res.redirect("/userpage");
 
     }
 });
@@ -184,7 +189,11 @@ app.post("/deletequote",(req,res)=>{
             });
         });
     
-        res.redirect("/userpage");
+        passport.authenticate("local", {
+            successRedirect: "/userpage",
+            failureRedirect: "/login"
+        })
+        // res.redirect("/userpage");
     }
   
 });
@@ -198,8 +207,12 @@ app.post("/deletefavquote",(req,res)=>{
                 console.log(err);
             }    
         })
-    
-        res.redirect("/userpage");
+
+        passport.authenticate("local", {
+            successRedirect: "/userpage",
+            failureRedirect: "/login"
+        })
+        // res.redirect("/userpage");
     }
     
 });
