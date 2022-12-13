@@ -136,32 +136,35 @@ app.post("/addquote", (req, res) => {
 });
 
 app.post("/addfav", (req, res) => {
-    const favQuoteId = req.body.favQuoteId;
+    if (req.isAuthenticated()) {
+        const favQuoteId = req.body.favQuoteId;
 
-    Quote.findById(favQuoteId, (err, data) => {
-        if (err) {
-            console.log(err);
-        } else {
-            User.findOne({ username: req.user.username }, function (err, foundUser) {
-                let flag = true;
+        Quote.findById(favQuoteId, (err, data) => {
+            if (err) {
+                console.log(err);
+            } else {
+                User.findOne({ username: req.user.username }, function (err, foundUser) {
+                    let flag = true;
 
-                for (let i = 0; i < foundUser.fav.length; i++) {
-                    if (foundUser.fav[i]._id == favQuoteId) {
-                        flag = false;
-                        res.redirect("/");
-                        break;
+                    for (let i = 0; i < foundUser.fav.length; i++) {
+                        if (foundUser.fav[i]._id == favQuoteId) {
+                            flag = false;
+                            res.redirect("/");
+                            break;
+                        }
                     }
-                }
 
-                if (flag) {
-                    foundUser.fav.push(data);
-                    foundUser.save();
-                    res.redirect("/");
-                }
-            });
-        }
-    });
-
+                    if (flag) {
+                        foundUser.fav.push(data);
+                        foundUser.save();
+                        res.redirect("/");
+                    }
+                });
+            }
+        });
+    }else{
+        res.redirect("/");
+    }
 
 
 });
