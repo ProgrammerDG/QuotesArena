@@ -15,10 +15,7 @@ app.set("view engine", "ejs");
 app.use(session({
     secret: process.env.SESSIONSECRET,
     resave: false,
-    saveUninitialized: false,
-    cookie:{
-        secure:false
-    }
+    saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
