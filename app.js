@@ -114,24 +114,30 @@ app.get("/userpage", (req, res) => {
 });
 
 app.post("/addquote", (req, res) => {
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-    let nq = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options) };
+    if (req.isAuthenticated()) {
+        var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
-    User.findOne({ username: req.user.username }, function (err, foundUser) {
-        foundUser.quotes.push(nq);
-        foundUser.save();
+        let nq = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options) };
+    
+        User.findOne({ username: req.user.username }, function (err, foundUser) {
+            foundUser.quotes.push(nq);
+            foundUser.save();
+    
+            let id2 = foundUser.quotes.slice(-1).pop()._id;
+    
+            let nq2 = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options), id2 };
+    
+            let q = new Quote(nq2);
+            q.save();
+        });
 
-        let id2 = foundUser.quotes.slice(-1).pop()._id;
-
-        let nq2 = { quote: req.body.newquote, author: req.body.newauthor, date: new Date().toLocaleDateString("en-US", options), id2 };
-
-        let q = new Quote(nq2);
-        q.save();
-    });
-
+        
     res.redirect("/userpage");
 
+    }else{
+        res.redirect("/login");
+    }
 
 });
 
@@ -170,37 +176,44 @@ app.post("/addfav", (req, res) => {
 });
 
 app.post("/deletequote", (req, res) => {
-    const checkedQuoteId = req.body.checkbox;
 
-    User.findOneAndUpdate({ username: req.user.username }, { $pull: { quotes: { _id: checkedQuoteId } } }, (err, data) => {
-        if (err) {
-            console.log(err);
-        }
+    if (req.isAuthenticated()) {
+        const checkedQuoteId = req.body.checkbox;
 
-        Quote.findOneAndRemove({ id2: checkedQuoteId }, function (err) {
+        User.findOneAndUpdate({ username: req.user.username }, { $pull: { quotes: { _id: checkedQuoteId } } }, (err, data) => {
             if (err) {
                 console.log(err);
             }
+    
+            Quote.findOneAndRemove({ id2: checkedQuoteId }, function (err) {
+                if (err) {
+                    console.log(err);
+                }
+            });
         });
-    });
-
-    res.redirect("/userpage");
-
+    
+        res.redirect("/userpage");
+    }else{
+        res.redirect("/login");
+    }
 
 });
 
 app.post("/deletefavquote", (req, res) => {
 
-    const favQuoteId = req.body.checkbox;
+    if (req.isAuthenticated()) {
+        const favQuoteId = req.body.checkbox;
 
-    User.findOneAndUpdate({ username: req.user.username }, { $pull: { fav: { _id: favQuoteId } } }, (err, data) => {
-        if (err) {
-            console.log(err);
-        }
-    })
-    res.redirect("/userpage");
-
-
+        User.findOneAndUpdate({ username: req.user.username }, { $pull: { fav: { _id: favQuoteId } } }, (err, data) => {
+            if (err) {
+                console.log(err);
+            }
+        })
+        res.redirect("/userpage");
+    
+    }else{
+        res.redirect("/login");
+    }
 });
 
 let globalUsername = "";
